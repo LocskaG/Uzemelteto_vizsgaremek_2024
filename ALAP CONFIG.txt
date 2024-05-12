@@ -1,0 +1,38 @@
+Router:
+
+
+enable secret Butor200En
+no ip domain-lookup
+
+
+
+line con 0
+password Butor300Line
+login
+exec-timeout 5 0
+exit
+
+line vty 0 15
+password Butor400Ssh
+login
+exit
+
+
+ip ssh version 2
+ip domain-name butor.loc
+
+crypto key generate rsa modulus 
+1024
+
+ip ssh time-out 60
+
+ip ssh authentication-retries 2
+
+line vty 0 15
+	transport input ssh
+	login local
+
+
+
+end
+write memory

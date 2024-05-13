@@ -1,0 +1,19 @@
+ALAP CONFIG
+enable
+configure terminal
+no ip domain-lookup
+interface [interfész típusa és száma]
+ip address [IP cím] [alhálózati maszk]
+no shutdown
+hostname [készülék neve]
+enable secret [jelszó]
+line con 0
+password [jelszó
+login
+ip ssh version 2
+crypto key generate rsa modulus 2048
+line vty 0 15
+transport input ssh
+ip route 0.0.0.0 0.0.0.0 [alapértelmezett átjáró címe]
+clock timezone [időzóna rövidítése] [óraeltolás]
+

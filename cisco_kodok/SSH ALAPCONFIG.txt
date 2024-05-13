@@ -1,0 +1,20 @@
+Engedélyezze az SSH szolgáltatást
+	ip ssh version 2
+
+Állítsa be a domain nevet
+	ip domain-name rtp.cisco.com
+
+Generáljon egy 1024-bites kulcsot az SSH-hez
+	crypto key generate rsa modulus 1024
+
+Állítsa be az SSH időtúllépést 60 másodpercre
+	ip ssh time-out 60
+
+Állítsa be az SSH hitelesítési próbák számát 2-re
+	ip ssh authentication-retries 2
+
+Az SSH engedélyezve van, de konfigurálnunk kell a VTY-vonalakat is:
+
+	line vty 0 4
+	transport input ssh
+	login local

@@ -1,0 +1,370 @@
+hostname Sopron_R1
+en
+conf t
+hostname Sopron_R1
+no ip domain-lookup
+
+interface G0/0
+ip address 192.168.0.129 255.255.255.240
+description Sopron_A Sopron_ASA0 G1/2
+no sh
+
+
+interface Se0/0/0
+ip address 130.10.10.6 255.255.255.252
+description GYOR Gyor_R0 Serial0/0/0
+no sh
+
+interface Se0/0/1
+ip address 130.10.10.10 255.255.255.252
+description Pozsony Pozsony_R1 Serial0/1/0
+no sh
+ex,
+router ospf 1
+
+network 192.168.0.128 0.0.0.7 area 0
+network 130.10.10.0 0.0.0.7 area 0
+network 130.10.10.4 0.0.0.7 area 0
+network 130.10.10.12 0.0.0.7 area 0
+
+
+ 
+
+ 
+
+ 
+Sopron_R2
+ 
+en
+conf t
+hostname Sopron_R2
+
+interface G0/0
+
+ip address 192.168.0.145 255.255.255.248
+
+no shutdown
+
+exit
+
+interface G0/1
+
+ip address 192.168.0.137 255.255.255.248
+
+no shutdown
+
+exit
+
+interface G0/2
+
+ip address 192.168.0.130 255.255.255.248
+
+no shutdown
+
+exit
+
+ ip routing
+
+router ospf 1
+
+network 192.168.0.128 0.0.0.7 area 0
+network 130.10.10.0 0.0.0.7 area 0
+network 130.10.10.4 0.0.0.7 area 0
+network 130.10.10.12 0.0.0.7 area 0
+
+
+
+network 192.168.0.136 0.0.0.7 area 1
+
+network 192.168.0.144 0.0.0.7 area 1
+
+
+
+network 192.168.0.152 0.0.0.7 area 1
+
+network 192.168.0.160 0.0.0.7 area 1
+
+ 
+
+
+network 192.168.0.0 0.0.0.63 area 1
+
+network  192.168.0.64 0.0.0.63 area 1
+
+ex
+
+
+
+
+
+Sopron_R3
+
+
+en
+conf t
+
+hostname Sopron_R3
+
+interface G0/0
+
+ip address 192.168.0.146 255.255.255.248
+
+no shutdown
+
+exit
+
+interface G0/1
+
+ip address 192.168.0.153 255.255.255.248
+
+no shutdown
+
+exit
+
+interface G0/2
+
+ip address 192.168.0.161 255.255.255.248
+
+no shutdown
+
+exit
+
+ 
+
+router ospf 2
+
+
+
+network 192.168.0.136 0.0.0.7 area 1
+
+network 192.168.0.144 0.0.0.7 area 1
+
+
+
+network 192.168.0.152 0.0.0.7 area 1
+
+network 192.168.0.160 0.0.0.7 area 1
+
+ 
+
+
+network 192.168.0.0 0.0.0.63 area 1
+
+network  192.168.0.64 0.0.0.63 area 1
+
+
+ex
+
+
+
+Sopron_Multilayer_Switch1
+
+en
+conf t
+int g1/0/1
+no switchport
+no shut
+ip add 192.168.0.154 255.255.255.248
+ex
+
+
+ 
+int range g1/0/2-3
+switchport mode trunk
+ex
+ 
+ip routing
+vlan 21
+
+vlan 22
+
+ 
+
+
+int vlan 21
+
+ip add 192.168.0.3 255.255.255.192
+
+standby 21 priority 100
+standby 21 ip 192.168.0.1
+
+ex
+
+int vlan22 
+ip add 192.168.0.69 255.255.255.192
+
+standby 22 priority 100
+standby 22 ip 192.168.0.65
+
+ex
+
+
+
+
+router ospf 2
+
+
+
+network 192.168.0.152 0.0.0.7 area 1
+
+
+network 192.168.0.0 0.0.0.63 area 1
+
+network  192.168.0.64 0.0.0.63 area 1
+
+ 
+Sopron_Multilayer_Switch2
+
+
+
+en
+conf t
+int g1/0/1
+no switchport
+no shut
+ip add 192.168.0.162 255.255.255.248
+ex
+ 
+
+ip routing
+
+ 
+
+int range g1/0/2-3
+switchport mode trunk
+ 
+
+vlan 21
+
+vlan 22
+ 
+
+ip routing
+
+
+
+int vlan21
+
+ip add 192.168.0.2 255.255.255.192
+
+standby 21 priority 90
+standby 21 ip 192.168.0.1
+
+ex
+
+int vlan22 
+ip add 192.168.0.68 255.255.255.192
+
+standby 22 priority 90
+standby 22 ip 192.168.0.65
+
+ex
+
+
+router ospf 2
+
+
+
+network 192.168.0.136 0.0.0.7 area 1
+
+network 192.168.0.144 0.0.0.7 area 1
+
+
+
+network 192.168.0.152 0.0.0.7 area 1
+
+network 192.168.0.160 0.0.0.7 area 1
+
+ 
+
+
+network 192.168.0.0 0.0.0.63 area 1
+
+network  192.168.0.64 0.0.0.63 area 1
+
+
+
+
+
+
+
+
+
+Pozsony
+
+router ospf 1
+
+network 192.168.5.192 0.0.0.3 area 0
+
+network 130.10.10.0 0.0.0.3 area 0
+network 130.10.10.8 0.0.0.3 area 0
+network 130.10.10.12 0.0.0.3 area 0
+
+
+
+network 192.168.5.0 0.0.0.63 area 1
+
+network 192.168.5.64 0.0.0.63 area 1
+
+network 192.168.5.128 0.0.0.63 area 1
+
+ 
+network 192.168.5.196 0.0.0.3 area 1
+
+network 192.168.5.200 0.0.0.3 area 1
+
+
+
+
+
+
+
+általános
+
+en
+conf t
+
+
+no router ospf 2
+no router ospf 1
+
+en
+sh ip ospf database 
+
+en
+show ip route
+
+
+
+
+sopron ospf 1
+
+
+
+router ospf 1
+
+network 192.168.0.128 0.0.0.7 area 0
+network 130.10.10.0 0.0.0.7 area 0
+network 130.10.10.4 0.0.0.7 area 0
+network 130.10.10.12 0.0.0.7 area 0
+
+
+
+network 192.168.0.136 0.0.0.7 area 1
+
+network 192.168.0.144 0.0.0.7 area 1
+
+
+
+network 192.168.0.152 0.0.0.7 area 1
+
+network 192.168.0.160 0.0.0.7 area 1
+
+ 
+
+
+network 192.168.0.0 0.0.0.63 area 1
+
+network  192.168.0.64 0.0.0.63 area 1
+
+ex

@@ -1,0 +1,91 @@
+Sopron_R2
+
+conf t
+interface G0/0
+ ip address 192.168.0.145 255.255.255.248
+ no shutdown
+exit
+
+interface G0/1
+ ip address 192.168.0.153 255.255.255.248
+ no shutdown
+exit
+
+
+Sopron_R2
+
+router ospf 45
+ router-id 2.2.2.2
+ network 192.168.0.144 0.0.0.7 area 0
+ network 192.168.0.152 0.0.0.7 area 0
+exit
+
+
+Sopron_S1
+
+conf t
+vlan 21
+exit
+
+vlan 22
+exit
+
+interface range f0/4-24
+ switchport mode access
+ switchport access vlan 21
+exit
+
+interface range f0/4-24
+ switchport mode access
+ switchport access vlan 22
+exit
+
+
+Sopron_S1
+
+conf t
+vlan 21
+exit
+
+vlan 22
+exit
+
+interface range f0/4-24
+ switchport mode access
+ switchport access vlan 21
+exit
+
+interface range f0/4-24
+ switchport mode access
+ switchport access vlan 22
+exit
+
+
+Sopron_Multilayer_Switch1 és Switch2
+
+
+en
+conf t
+interface vlan 21
+ ip address 192.168.0.3 255.255.255.192
+ standby 21 priority 110
+ standby 21 ip 192.168.0.1
+exit
+
+interface vlan 22
+ ip address 192.168.0.69 255.255.255.192
+ standby 22 priority 110
+ standby 22 ip 192.168.0.65
+exit
+
+
+Sopron_S1 és S2
+
+conf t
+interface range g0/1-2
+ switchport mode trunk
+ switchport trunk allowed vlan 21,22
+exit
+
+
+

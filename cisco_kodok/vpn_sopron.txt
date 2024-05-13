@@ -1,0 +1,143 @@
+---------------------------------
+Sopron_R2
+---------------------------------
+
+en
+conf t
+
+
+license boot module c2900 technology-package securityk9
+
+yes
+
+do reload
+
+en
+conf t
+
+
+access-list 130 permit ip 192.168.0.136 0.0.0.7 192.168.5.196 0.0.0.3
+
+ 
+crypto isakmp policy 10
+
+encryption aes 256
+
+authentication pre-share 
+
+group 5
+
+ex
+
+
+crypto isakmp key gtech45 address 192.168.5.194
+
+ 
+
+crypto ipsec transform-set VPN-SET esp-aes esp-sha-hmac 
+ 
+crypto map VPN-MAP 10 ipsec-isakmp
+
+
+description VPN Pozsony serverhez
+
+
+set peer 192.168.5.194
+
+set transform-set VPN-SET  
+
+
+match address 130
+
+ex
+
+
+ 
+
+
+int g0/2 
+
+
+crypto map VPN-MAP
+
+
+ex
+do wr
+
+
+
+
+
+---------------------------------
+Pozsony r2
+---------------------------------
+
+en
+conf t
+
+
+
+
+ 
+
+license boot module c2900 technology-package securityk9
+yes
+
+ 
+
+do reload
+
+en
+conf t
+
+access-list 130 permit ip 192.168.5.196 0.0.0.3 192.168.0.136 0.0.0.7  
+
+
+crypto isakmp policy 10
+
+encryption aes 256
+
+authentication pre-share 
+
+group 5
+
+ex
+
+crypto isakmp key gtech45 address 192.168.0.130
+
+ 
+
+crypto ipsec transform-set VPN-SET esp-aes esp-sha-hmac
+
+
+crypto map VPN-MAP 10 ipsec-isakmp
+
+
+
+description VPN A LINUX SZERVERHEZ
+
+set peer 192.168.0.130
+
+
+set transform-set VPN-SET  
+
+
+match address 130
+
+ex
+ 
+
+
+int g0/0
+
+
+crypto map VPN-MAP
+
+
+ex
+do wr
+
+
+
+do  sh crypto ipsec sa
+sh version 

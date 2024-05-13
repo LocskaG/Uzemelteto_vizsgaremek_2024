@@ -1,0 +1,65 @@
+en
+conf t
+hostname Sopron_R3
+no ip domain-lookup
+
+
+
+interface G0/0
+ip address 192.168.0.161 255.255.255.240
+description Sopron_C Sopron_ASA0 G1/1
+no sh
+
+
+interface G0/1
+ip address 192.168.0.1 255.255.255.192
+description Sopron_B Sopron_S1 G0/1
+no sh
+
+interface G0/2	
+ip address 192.168.0.177 255.255.255.248
+description Sopron_D Fa0 
+no sh
+
+
+
+en
+conf t
+hostname Sopron_R2
+no ip domain-lookup
+
+
+
+interface G0/0
+ip address 192.168.0.145 255.255.255.240
+description Sopron_B Sopron_ASA0 G1/3
+no sh
+
+
+interface G0/1
+ip address 192.168.0.65 255.255.255.192
+description Sopron_F  Sopron_S2 G0/1
+no sh
+
+
+
+en
+conf t
+hostname Sopron_R1
+no ip domain-lookup
+
+interface G0/0
+ip address 192.168.0.129 255.255.255.240
+description Sopron_A Sopron_ASA0 G1/2
+no sh
+
+
+interface Se0/0/0
+ip address 130.10.10.6 255.255.255.252
+description GYOR Gyor_R0 Serial0/0/0
+no sh
+
+interface Se0/0/1
+ip address 130.10.10.10 255.255.255.252
+description Pozsony Pozsony_R1 Serial0/1/0
+no sh

@@ -1,0 +1,51 @@
+enable
+configure terminal
+hostname S1
+enable secret class
+line con 0
+password cisco
+login
+exit
+banner motd "Az illetektelen behatolas buncselekmeny "
+interface vlan 1
+
+ip address 192.168.1.200 255.255.255.0
+no shutdown
+exit
+
+
+enable
+configure terminal
+hostname Sopron_S2
+int range f0/1-3
+
+enable
+configure terminal
+channel-group 1 mode desirable 
+
+interface port-channel 1
+switchport trunk native vlan 29
+switchport trunk allowed vlan 21,22
+switchport mode trunk
+exit
+
+interface range fastEthernet 0/4-24, gigabitEthernet 0/1
+switchport access vlan 22
+switchport mode access
+exit
+
+interface vlan 1
+no ip address
+shutdown
+exit
+
+interface vlan 29
+ip address 192.168.0.78 255.255.255.192
+exit
+
+ip default-gateway 192.168.0.129
+
+
+end
+
+write memory

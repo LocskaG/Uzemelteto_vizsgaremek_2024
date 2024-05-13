@@ -1,0 +1,157 @@
+Pozsony_MS
+------------------------------------------------
+enable
+configure terminal
+hostname Pozsony_MS
+int g1/0/1
+no switchport
+no shut
+ip add 192.168.5.202 255.255.255.252
+ex
+
+no ip domain-lookup
+
+vlan 11
+
+vlan 12
+
+vlan 13
+
+
+int range g1/0/4-5
+
+switchport trunk allowed vlan 11,12,13
+switchport mode trunk
+exit
+
+int range g1/0/2-3	
+switchport trunk allowed vlan 11,12,13
+switchport mode trunk
+exit
+
+
+
+
+
+int vlan 11
+
+ip add 192.168.5.2 255.255.255.192
+standby 11 priority 100
+standby 11 ip 192.168.5.1
+
+ex
+
+
+
+
+int vlan 12
+
+ip add 192.168.5.66 255.255.255.192
+standby 11 priority 100
+standby 11 ip 192.168.5.65
+
+ex
+
+int vlan 13
+
+ip add 192.168.5.130 255.255.255.192
+standby 11 priority 100
+standby 11 ip 192.168.5.129
+ex
+
+ip routing
+router ospf 2
+
+
+network 192.168.5.200 0.0.0.3 area 1
+
+network 192.168.5.196 0.0.0.3 area 1
+
+
+network 192.168.5.0 0.0.0.63 area 1
+
+network 192.168.5.64 0.0.0.63 area 1
+
+network 192.168.5.128 0.0.0.63 area 1
+
+ex
+
+
+
+Pozsony_S1
+------------------------------------------------
+enable
+configure terminal
+hostname Pozsony_S1
+
+
+vlan 11
+
+vlan 12
+
+vlan 13
+
+
+no ip domain-lookup
+
+int range f0/1-2
+switchport trunk allowed vlan 11,12,13
+switchport mode trunk
+exit
+
+int range f0/3-4	
+
+switchport trunk allowed vlan 11,12,13
+switchport mode trunk
+exit
+
+
+
+int range f0/4-24 
+switchport mode access
+switchport access vlan 11
+ex
+
+
+Pozsony_S2
+------------------------------------------------
+enable
+configure terminal
+hostname Pozsony_S1
+
+no ip domain-lookup
+
+vlan 11
+
+vlan 12
+
+vlan 13
+
+
+
+
+int range f0/1-2
+switchport trunk allowed vlan 11,12,13
+switchport mode trunk
+exit
+
+int range f0/3-4	
+switchport trunk allowed vlan 11,12,13
+switchport mode trunk
+exit
+
+
+
+int range f0/4-23
+switchport mode access
+switchport access vlan 12
+ex
+
+
+
+int f0/24
+switchport mode access
+switchport access vlan 13
+ex
+
+

@@ -1,0 +1,27 @@
+Router:
+
+hostname [készülék neve]
+enable secret [jelszó]
+no ip domain-lookup
+
+interface [interfész típusa és száma]
+	[IP cím] [alhálózati maszk]
+no shutdown
+exit
+
+line con 0
+password [jelszó]
+login
+exec-timeout 5 0
+exit
+
+line vty 0 15
+password [jelszó]
+login
+exit
+
+ip route 0.0.0.0 0.0.0.0 [alapértelmezett átjáró címe]
+clock timezone [időzóna rövidítése] [óraeltolás]
+
+end
+write memory

@@ -1,0 +1,27 @@
+Port security
+interface [interfész típusa és száma]
+description [leírás]
+switchport mode [access/trunk]
+switchport access vlan [VLAN szám]
+switchport port-security
+switchport port-security violation [protect/restrict/shutdown]
+switchport port-security maximum [maximális MAC címek száma]
+switchport port-security mac-address [engedélyezett MAC cím]
+spanning-tree portfast
+spanning-tree bpduguard enable
+no shutdown
+
+LOGIN BLOCK:
+login block-for 180 attempts 2 within 120
+login on-failure log every 2
+login on-success log
+
+SSH SECURITY
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 2
+
+ACCES SECURITY
+no ip telnet server
+no ip bootp server
+no cdp run

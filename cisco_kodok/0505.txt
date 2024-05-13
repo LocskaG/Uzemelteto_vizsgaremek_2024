@@ -1,0 +1,125 @@
+Sopron_R1
+------------------
+en
+conf t
+
+ip routing
+
+
+router ospf 1
+
+network 192.168.0.128 0.0.0.7 area 0
+network 130.10.10.12 0.0.0.7 area 0
+network 130.10.10.10 0.0.0.7 area 0
+network 130.10.10.6 0.0.0.7 area 0
+
+ex
+
+
+Sopron_R2
+------------------
+en
+conf t
+
+int G0/0	
+ip ad 192.168.0.145 255.255.255.248
+no sh
+ex
+int G0/1
+ip ad 192.168.0.137 255.255.255.248
+no sh
+ex
+int G0/2
+ip ad 192.168.0.130 255.255.255.248
+no sh
+
+
+ip routing
+
+router ospf 1
+
+network 192.168.0.128 0.0.0.7 area 0
+
+router ospf 2
+
+
+
+network 192.168.0.144 0.0.0.7 area 1
+
+router ospf 5
+
+
+network 192.168.0.136 0.0.0.7 area 4
+
+ex
+
+
+Sopron_R3
+------------------
+
+
+en
+conf t
+
+ip routing
+
+router ospf 2
+
+
+network 192.168.0.144 0.0.0.7 area 1
+
+
+
+router ospf 3
+network 192.168.0.152 0.0.0.7 area 2
+
+router ospf 4
+ 
+
+network 192.168.0.160 0.0.0.7 area 3
+
+ex
+
+Sopron_Multilayer_Switch1
+------------------
+en
+conf t
+
+ip routing
+
+router ospf 3
+network 192.168.0.152 0.0.0.7 area 2
+
+network 192.168.0.0 0.0.0.63 area 2
+
+network 192.168.0.64 0.0.0.63 area 2
+
+
+ex
+
+ip route cél hálózat ezen a porton keresztül 
+
+ip route 192.168.0.144 255.255.255.248 192.168.0.153
+
+Sopron_Multilayer_Switch2
+------------------
+en
+conf t
+ip routing
+
+router ospf 4
+ 
+
+network 192.168.0.160 0.0.0.7 area 3
+
+network 192.168.0.0 0.0.0.63 area 3
+
+network 192.168.0.64 0.0.0.63 area 3
+
+
+ex
+
+
+
+
+

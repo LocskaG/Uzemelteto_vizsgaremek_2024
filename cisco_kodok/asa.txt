@@ -1,0 +1,87 @@
+en
+
+conf t
+hostname firewall
+enable password Abc123
+
+username Admin password Abc123
+
+clock set 19:21:33 07 may 2024
+
+int g1/1 
+
+no sh
+
+ip add 192.168.100.1 255.255.255.0
+
+nameif INSIDE
+
+security-level 100
+
+ex
+
+
+int g1/2 
+
+no sh
+
+ip add 10.10.10.1 255.255.255.240
+
+nameif DMZ
+
+security-level 70
+
+ex
+
+
+
+int g1/3
+
+no sh
+
+ip add 20.20.20.1 255.255.255.0
+
+nameif OUTSIDE
+
+security-level 0
+
+ex
+
+wr mem
+
+
+sh start
+
+------------------------
+
+
+en
+Abc123
+conf t
+DHCP
+---------------------------------------------------
+
+dhcpd address 192.168.100.101-192.168.100.199 INSIDE
+
+dhcpd dns 8.8.8.8 
+
+
+dhcpd enable INSIDE
+
+
+wr mem
+sh start
+---------------------------------------------------
+ssh
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,170 @@
+----------------------------------------------------------------------------------
+ASA (5606-s ASA1)
+----------------
+en
+
+//enter
+
+conf t
+
+hostname Tűzfal
+
+enable password cisco
+
+username cisco password cisco
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------
+configure ip addresses, names, security level to the interface
+----------------------------------------------------------------------------------
+ASA (5606-s ASA1)
+----------------
+en
+
+cisco
+conf t
+
+int g1/1
+no sh
+
+nameif INSIDE
+
+
+security-level 100
+
+ip add 130.10.10.14 255.255.255.252
+
+
+ex
+
+
+
+int g1/2
+no sh
+
+nameif OUTSIDE
+
+
+security-level 0
+
+ip add 130.10.10.17 255.255.255.252
+
+
+ex
+
+wr mem
+
+
+----------------
+inside router
+----------------
+
+interface az asa felé
+----------------
+g0/1
+
+130.10.10.13255.255.255.30
+
+
+
+
+
+Outside router (ISP)
+----------------
+
+interface a switch felé
+----------------
+
+g0/0
+8.8.8.1 255.255.255.0
+
+
+
+interface az asa felé
+----------------
+g0/1
+ip add 130.10.10.18 255.255.255.252
+
+
+
+---------------
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------
+
+opsf on the inside router and firewall
+----------------------------------------------------------------------------------
+
+----------------
+inside router
+----------------
+
+en
+conf t
+router ospf 1
+ 
+
+
+network 130.10.10.12 0.0.0.3 area 0
+
+ex
+
+
+----------------
+Outside router (ISP)
+----------------
+en
+conf t
+router ospf 1
+  
+
+network 8.8.8.0 0.0.0.255 area 0
+
+network 130.10.10.16 0.0.0.3 area 0
+
+ex
+
+
+----------------
+ASA (5606-s ASA1)
+----------------
+en
+conf t
+router ospf 1
+
+
+network 130.10.10.12 255.255.255.252 area 0
+
+network 130.10.10.16 255.255.255.252 area 0
+
+
+ex
+
+----------------------------------------------------------------------------------
+
+configure default static routing on the outside router and firewall
+----------------------------------------------------------------------------------
+
+
+----------------
+ASA (5606-s ASA1)
+----------------
+en
+conf t
+route OUTSIDE 0.0.0.0 0.0.0.0 130.10.10.18
+
+----------------
+Outside router (ISP)
+----------------

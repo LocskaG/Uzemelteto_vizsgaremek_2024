@@ -1,38 +1,20 @@
-Router:
-
-
-enable secret Butor200En
 no ip domain-lookup
-
-
-
-line con 0
-password Butor300Line
-login
-exec-timeout 5 0
-exit
-
-line vty 0 15
-password Butor400Ssh
-login
-exit
-
-
-ip ssh version 2
 ip domain-name butor.loc
-
-crypto key generate rsa modulus 
-1024
-
-ip ssh time-out 60
-
-ip ssh authentication-retries 2
-
+enable secret cisco
+line con 0
+password cisco
+login
+exit
 line vty 0 15
-	transport input ssh
-	login local
-
-
-
-end
-write memory
+password cisco
+login
+exit
+service password-encryption
+login block-for 120 attempts 5 within 60
+banner motd # Belepes csak jogosultsaggal #
+crypto key generate rsa general-keys modulus 1024
+ip ssh version 2
+ip ssh time-out 60
+username admin privilege 15 password cisco
+do write
+exit
